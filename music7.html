@@ -1,0 +1,237 @@
+<html>
+<head>
+       <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+
+    var arAudio ="";
+    var arAudio1 =
+     ["H_O_T-We Are The Future.mp3", "Love Tonight Ringtone.wav", "[3D Audio]  (OH MY GIRL) -(Secret Garden).mp3", 
+ "The Way We Were.mp3", 'Pokarekare Ana-(戀歌).mp3', 'Tish Hinojosa - Donde Voy.mp3', 'Helene Fischer-The Power Of Love.mp3',
+                          '月亮代表我的心 - 鄧麗君.mp3', '夜来香 - 鄧麗君(邓丽君).mp3',
+                          "Follow Me.mp3",'Hatsune Miku.mp3' , 'Seijun Philosophy.mp3'  ];
+                          
+    var arAudio2 = ["그대는 눈물겹다-MC THE MAX.mp3", "서영은-그 사람의 결혼식.mp3", "슬픈사랑 - 박은신.mp3", 
+                  "이안 - 물고기자리.mp3", '[이예린] 포플러 나무 아래.mp3', '[베이시스] 내가 날 버린 이유.mp3', 
+                  `A Millionaire's First Love -  기억을 따라가는 재경.m4a`, '최재훈 - 잊을수없는너.mp3', 
+                  '[룰라]천상유애.mp3', '김현정-멍.mp3', '주홍 글씨_스페이스 A.mp3', 
+                  "난 괜찮아.mp3",'조관우 비원.m4a' , '인피니트(Infinite) - 내꺼하자.m4a'  ];                      
+    var arAudio3 = ["03 - Going the Distance.mp3", "04-GO WEST.mp3", "4 Non Blondes - What s Up.mp3", 
+          "05 Bad Case Of Loving You.mp3", '06 - Sanctus.mp3', '06 Chariots of Fire.m4a', 
+          `07 Smoke On The Water.mp3`, '10 - Summer Eletro Hits - Happening  - Smells like then spirit.mp3', 
+          '11 Con Te Partirò.mp3', '11 September.mp3',
+          "45 - Rhapsody of fire - Emerald Sword.mp3",'Alan Walker-01-Spectre.mp3' , 'Circle Of Life.mp3',
+`Don't Let Me Be Misunderstood (Santa Esmeralda).mp3`, 'Electric Romeo.ogg', 'Hawaii Five-0(Theme).mp3' ,
+'Sam Brown - Stop (Official Music Video).mp3', 'Sweet Dreams.mp3', 'The Whole Nine Yards‬‏.mp3'
+                         ];
+    
+    var arAudio4 = ["13 The Final Countdown.mp3", "Bonnie Tyler-11-Holding Out For A Hero-128.mp3", "Daddy_cool.mp3", 
+                          "Endless Love.mp3", 'Freddie Aguilar-06-Anak-192.mp3', 'Jessica - Good Bye.mp3', 
+                          `Kansas - Dust in the wind.mp3`, 'Lionel Richi - Say You , Say Me.mp3', 
+                          'Smile - Butterfly.mp3', 'still got the blues.mp3', 'The Cranberries - Ode To My Family.mp3',
+                          "those were the days   mary hopkin.mp3",'Tomorrow.mp3' , 'We Are The Champions.mp3',
+		`王菲_Eyes On Me.mp3`,   '웸-라스트크리스마스.mp3'  
+                         ];
+      var arAudio5 = ["08 - Waltz 1 In E Flat, Op 18, Grande Valse Brillante.mp3", "048_Bach-tokkata-bwv-565.mp3", 
+                          "Bach - Minuet In G Major.mp3", 'Beethoven - Sonata Pathetique 3rd movement.mp3',  
+                          'Frank_Mills_-_Music_Box_Dancer__-_Durati.mp3', 'Heart and Soul - Piano Duet, Hoagy Carmichael.mp3',
+                          'joplin-scott-the-entertainer.mp3' , 'Mozart - Turkish March.mp3'  ];
+                       
+     var arAudio6 = ["01 - Holiday.mp3", "03 Only Time 1.m4a", "05화 Boney M - Sunny.mp3", 
+                "05화 Daniel Caine Orchestra - Mac Gyver.mp3", '011 Gabriels Oboe - 미션.mp3', '20 Joy - Touch By Touch.mp3', 
+                 `24 - On my own.mp3`, '57 - Anne murray - You needed me.mp3', 
+               'Barbra Streisand-Memory.mp3', 'Beauty and the Beast (From Beauty and the BeastOfficial Video).mp3', 
+              'Isabelle_adjani_-_Ohio.mp3',
+              "Lambada - Kaoma.mp3",'Nothing Gonna Change My Love For You.mp3' , 'Sarah Brightman_08_Nella Fantasia_192k.mp3',
+		`take on me.wma`,   '유로댄스 - 죠이(Joy) - Korean Girls.mp3', '캐논.mp3' 
+                         ];
+     var arAudio7 = ["(만화) (카드캡터 체리 OP)Catch You Catch Me - 정여진 외 1명.mp3", 
+                "[애니OST] 하니 - 달려라 하니 오프닝 _ Run Hany Opening.mp3",  
+                  "06화 정수라 - 환희.mp3", 'BoA - Marry Christmas.mp3',  
+                  `Secret Garden- Song from a Secret Garden.m4a`, '김소연 _ 정여진 - 체인지 (Change).m4a', 
+                  '너무 아픈 사랑은 사랑이 아니었음을_박새별.mp3', '리즈  이별의 그늘.m4a', 
+                  '세일러문OP 달빛의 전설(Full Ver.김현아) - cover by   정여진.m4a' , '정미애-인연.mp3'  ];                        
+     var arAudio8 = [ "01. 그대라구요.mp3", "01 Dream High(드림하이).mp3", "01 나를 잊지말아요.mp3",
+     "01 보고 싶어...운다.mp3", "09_김범수_-_애인있어요.mp3", "022 송골매-사랑 그 아름답고 소중한 얘기들.mp3",
+     "048 [길은정] - 01 소중한 사람.mp3", "G-Friend-White (하얀마음)_여자친구 GFRIEND.mp3", "Roy Kim (Ost Reply 1994).mp3",
+     "Saying I Love You-(Ost Озорной поцелуй) So Yu (Sistar).mp3", "그남자그여자.mp3",
+     "로이킴(Roy Kim) - 서울의 달.mp3", "젝스키스 - 폼생폼사.mp3", "조장혁 - 중독된 사랑.mp3", 
+     "트러블메이커 (Trouble Maker) - Now (There Is No Tomorrow)(내일은 없어).mp3"
+     ];    
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", `mp3/${i_select}/` + arAudio[i]);
+     audio.play();
+    
+    var index = arAudio[i].lastIndexOf(".");
+    var result= arAudio[i].substring(0, index); //.mp3 제거
+    var song = result.replace(/[0-9.]/g, "");  //숫자 제거
+    
+    $('#myAudioname').text(song);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+      music_load(7);
+       aud_play_next() ;
+  });
+
+
+ function getQueryString(key) {
+ 
+    // 전체 Url을 가져온다.
+    var str = location.href;
+ 
+    // QueryString의 값을 가져오기 위해서, ? 이후 첫번째 index값을 가져온다.
+    var index = str.indexOf("?") + 1;
+ 
+    // Url에 #이 포함되어 있을 수 있으므로 경우의 수를 나눴다.
+    var lastIndex = str.indexOf("#") > -1 ? str.indexOf("#") + 1 : str.length;
+ 
+    // index 값이 0이라는 것은 QueryString이 없다는 것을 의미하기에 종료
+    if (index == 0) {
+        return "";
+    }
+ 
+    // str의 값은 a=1&b=first&c=true
+    str = str.substring(index, lastIndex); 
+ 
+    // key/value로 이뤄진 쌍을 배열로 나눠서 넣는다.
+    str = str.split("&");
+ 
+    // 결과값
+    var rst = "";
+ 
+    for (var i = 0; i < str.length; i++) {
+ 
+        // key/value로 나눈다.
+        // arr[0] = key
+        // arr[1] = value
+        var arr = str[i].split("=");
+ 
+        // arr의 length가 2가 아니면 종료
+        if (arr.length != 2) {
+            break;
+        }
+ 
+        // 매개변수 key과 일치하면 결과값에 셋팅
+        if (arr[0] == key) {
+            rst = arr[1];
+            break;
+        }
+    }
+    return rst;
+}
+    function music_load(sel)
+    {
+        arAudioAll = [ null, arAudio1, arAudio2, arAudio3, arAudio4, arAudio5, arAudio6, arAudio7, arAudio8];
+         
+         var rst = getQueryString("cate");
+        
+        if( sel != 0)
+        {
+        
+        }
+        else if(rst > 0 && rst<9)
+        {
+            sel = rst;
+        }
+        else
+        {
+          sel= 8;
+         }
+        music_select(sel);
+        
+        arAudio = arAudioAll[sel];
+        i_max=arAudio.length-1;
+        
+        //i 설정
+        var rst = getQueryString("song");
+        if(rst != "")
+        {
+             val = Number(rst);
+              
+             if( val >=0 && val < i_max)
+                i = val; 
+        }
+        
+    }    
+    function music_select( selected)
+    {
+        i_select=0;
+        var i = 1;
+        for(i; i< 10; i++)
+        {
+            if(i == selected)
+            {
+              i_select= i;
+              break;
+            }
+        }
+        if(i_select == 0) i_select = 8;        
+    }
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box (kor ver)</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>

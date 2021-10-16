@@ -1,0 +1,158 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+
+    var arAudio = ["[애니OST] 하니 - 달려라 하니 오프닝 _ Run Hany Opening.mp3",
+     "BoA - Marry Christmas.mp3",
+     "내꺼하자.mp3",
+     "슬픈사랑 - 박은신.mp3",
+     "아이유 - 슬픈인연.mp3", 
+     "최재훈 - 잊을수없는너.mp3",
+     "인순이 - 거위의 꿈.mp3", 
+     "조관우-01-비원-One + One-128.mp3"];
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", 'mp3/9/' + arAudio[i]);
+     audio.play();
+    
+    
+        var index = arAudio[i].lastIndexOf(".");
+    var result= arAudio[i].substring(0, index); //.mp3 제거
+    var song = result.replace(/[0-9.]/g, "");  //숫자 제거
+    $('#myAudioname').text(song);
+    //var result = arAudio[i].split(".");
+   // $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000);
+    
+ function getQueryString(key) {
+ 
+    // 전체 Url을 가져온다.
+    var str = location.href;
+ 
+    // QueryString의 값을 가져오기 위해서, ? 이후 첫번째 index값을 가져온다.
+    var index = str.indexOf("?") + 1;
+ 
+    // Url에 #이 포함되어 있을 수 있으므로 경우의 수를 나눴다.
+    var lastIndex = str.indexOf("#") > -1 ? str.indexOf("#") + 1 : str.length;
+ 
+    // index 값이 0이라는 것은 QueryString이 없다는 것을 의미하기에 종료
+    if (index == 0) {
+        return "";
+    }
+ 
+    // str의 값은 a=1&b=first&c=true
+    str = str.substring(index, lastIndex); 
+ 
+    // key/value로 이뤄진 쌍을 배열로 나눠서 넣는다.
+    str = str.split("&");
+ 
+    // 결과값
+    var rst = "";
+ 
+    for (var i = 0; i < str.length; i++) {
+ 
+        // key/value로 나눈다.
+        // arr[0] = key
+        // arr[1] = value
+        var arr = str[i].split("=");
+ 
+        // arr의 length가 2가 아니면 종료
+        if (arr.length != 2) {
+            break;
+        }
+ 
+        // 매개변수 key과 일치하면 결과값에 셋팅
+        if (arr[0] == key) {
+            rst = arr[1];
+            break;
+        }
+    }
+    return rst;
+}
+    
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+             
+        //i 설정
+        var rst = getQueryString("song");
+        if(rst != "")
+        {
+             val = Number(rst);
+              
+             if( val >=0 && val < i_max)
+                i = val; 
+        }
+        
+       aud_play_next() ;
+  });
+  
+  
+  
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box (kor ver)</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<html>
+
+<head>
+<style type=text/css>
+   h4 {
+     line-height: 30%;	
+   }
+   p {
+     line-height: 30%;	
+   }
+
+   body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}   
+</style>
+  <!--
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+   -->  
+ <script src='js/jquery.min.js'></script>
+   
+ <script>
+    var arAudio = ["08 - Waltz 1 In E Flat, Op 18, Grande Valse Brillante.mp3", "048_Bach-tokkata-bwv-565.mp3", 
+                          "Bach - Minuet In G Major.mp3", 'Beethoven - Sonata Pathetique 3rd movement.mp3',  
+                          'Frank_Mills_-_Music_Box_Dancer__-_Durati.mp3', 'Heart and Soul - Piano Duet, Hoagy Carmichael.mp3',
+                          'joplin-scott-the-entertainer.mp3' , 'Mozart - Turkish March.mp3'  ];
+
+        var ix=0;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     ix= ix+1;
+     if(ix>i_max)  ix=0;
+
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", 'mp3/5/' + arAudio[ix]);
+     audio.play();
+    
+    var result = arAudio[ix].split(".");   
+    $('#myAudioname').text(result[0]);
+     }
+   
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+      
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){      
+       ix =  randomInt(i_min, i_max);
+       aud_play_next() ;
+  });
+
+ </script>
+</head>
+
+
+<body>
+      <h3>Welcome Music Box </h3>
+     
+
+       <div class='rounded'>
+      <center><p style="padding-top:5px"><b>piano box</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+        <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:0px" ></p>
+      </div>
+     <div>
+       <a href="music1.html"><h2>M u s i c </h2></a>       
+       <a href="music2.html"><h2>M u s i c 2</h2></a>
+       <a href="music3.html"><h2>M u s i c 3</h2></a>
+       <a href="music4.html"><h2>M u s i c 4</h2></a>
+       <a href="music6.html"><h2>M u s i c 6</h2></a>
+       <a href="music7.html"><h2>M u s i c 7</h2></a>
+       <p><h2>OST</h2></p>
+       <a href="ost.html?ost=2"><h2>OST2</h2></a>
+       <a href="ost.html?ost=3"><h2>OST3</h2></a>
+       <a href="ost.html?ost=4"><h2>OST4</h2></a>
+       <p><h2>JAV</h2></p>
+       <a href="torrent.html"><h2>Jav</h2></a>
+       <a href="torrent2.html"><h2>Jav2</h2></a>
+       
+     </div>
+<body>
+</html>

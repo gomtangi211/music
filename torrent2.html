@@ -1,0 +1,291 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+        video{
+            display: none;
+        }        
+        .change   { /*추가*/
+          font-size: 16px; 
+          border: none;
+          outline: none;
+          color: white;
+          padding: 14px 16px;
+          /* background-color: #4CAF50; */
+          background-color: dimgrey;
+          font: inherit; /* Important for vertical align on mobile phones */
+          margin: 0; /* Important for vertical align on mobile phones */ 
+        }    
+        .togglebtn {
+        font-size: 16px; 
+        border: none;
+        outline: none;
+        /* color: white; */
+        padding: 14px 16px;
+       /* background-color: dimgrey; */
+         font: inherit; /* Important for vertical align on mobile phones */
+        margin: 0; /* Important for vertical align on mobile phones */
+        }        
+       .show {display:block;} 
+       .hide {display:none;}     
+        
+       </style>
+<script>
+        function togglefunc(e)
+        {
+        var id = e.id;
+        if(id == 'tog_title')
+        {
+            $('.vid_title').toggleClass('hide');
+                       
+        }
+        else
+        {
+            $('.vid_singer').toggleClass('hide');
+        }
+        e.classList.toggle("change");
+        }    
+</script>
+        <script>
+            var selectID = -1;
+            var cur_time = new Array();
+            function showVideo(id, visual)
+            {
+                if(visual ==true)
+                {
+                $('#'+id).hide();
+                $('#video'+id).show();
+                }
+                else
+                {
+                $('#'+id).show();
+                $('#video'+id).hide();
+                }
+            }
+            
+            function OnImageClick(e){
+                var id = e.getAttribute('id');
+                
+                
+                if(selectID != -1)
+                {
+                    var videoElement = document.getElementById('video'+selectID);
+
+
+                    videoElement.pause();
+                    
+                    cur_time[selectID] = videoElement.currentTime ;
+                    /*
+                    videoElement.addEventListener('loadedmetadata', function() {
+                        if(cur_time[id] > 0)
+                        {  
+                         this.currentTime = cur_time[id];
+                        }
+                    }, false);
+                    */                
+                    var sources = videoElement.getElementsByTagName('source');
+                    var src= sources[0].getAttribute('src');
+                    sources[0].removeAttribute('src');
+
+                     
+                    videoElement.load();
+                    /*
+                    if(cur_time[id] > 0)
+                    {
+                       videoElement.currentTime =cur_time[id];
+                       alert(videoElement.currentTime);
+                    }  
+                    */
+                    sources[0].setAttribute('src',src );
+                    
+
+                    showVideo(selectID, false);
+                }
+                
+
+                $('#dashboard').text(id + '선택'+ selectID +'예전');
+                showVideo(id, true);
+                document.getElementById('video'+id).play();
+                selectID =id;
+
+            }
+        </script>
+       <script type="text/javascript" src="http://gomtangi.iptime.org/jav_query?callback=parseResponse">
+function parseResponse(data)
+ {
+ 
+ alert('aaaaaaaa');
+     var entry= data.feed.entry;
+
+    ar_video=[];
+    alert(entry.length);
+    for(var i in entry) {
+
+    var ar=[];
+     
+    ar['release'] = entry[i].gsx$release.$t; 
+    ar['title'] = entry[i].gsx$title.$t;     
+
+    ar['img'] = entry[i].gsx$img.$t;
+
+    ar['file'] = entry[i].gsx$file.$t;
+    ar['name'] = entry[i].gsx$name.$t;
+
+    ar['avno'] = entry[i].gsx$avno.$t;
+
+    ar['avname'] = entry[i].gsx$avname.$t;
+    ar['hardlink'] = entry[i].gsx$hardlink.$t;    
+    ar['del'] = entry[i].gsx$del.$t;
+    
+    ar_video[i] = ar;
+      }
+
+   var width =  512/2;
+   var height = 288/2;
+
+   var url ="";   
+   var img = "";
+      
+   for(var i=0; i<  ar_video.length; i++)
+   {
+
+   if(ar_video[i].del == 1)
+   	continue;
+   	
+   var hardlink = ar_video[i].hardlink;
+   
+   if(hardlink == 1)
+   {
+   url = server_video + `jav/` + ar_video[i].file;
+   }
+   else
+   {
+   url = server_video + `jav${hardlink}/` + ar_video[i].file;
+   }
+   
+   img = server_video + 'torrent/pic/' + ar_video[i].img;
+   
+   $('#id_video').append(`
+     <div  style='float:left'>
+     <p class='vid_title hide'>${ar_video[i].title}</p>
+     <img id=${i} width=${width} height=${height} src="${img}"  onclick='OnImageClick(this)' >
+             <video id= 'video${i}'  width=${width} height=${height} controls preload='none' controlsList='nodownload' oncontextmenu='return false;'>
+                    <source src= "${url}" type='video/mp4'  >
+            </video>    
+     <p class='vid_singer hide'>${ar_video[i].avno} - ${ar_video[i].avname}</p>
+     </div>
+     `);
+   }    
+ 
+ }
+        
+       </script>
+ 
+         <script>
+         
+   var ar_video=[];
+   var server_video = 'http://gomtangi.iptime.org/';
+   
+         
+   $(document).ready(function(){
+   
+     // load_video();           
+  });
+ 
+ 
+ 
+ function load_video()
+{
+//포토앨범3
+// url="https://spreadsheets.google.com/feeds/list/1khF2rAKDuOz9jbs3VLvIoOKVgyVCfzT7OaXPqUPeUg0/1/public/values?alt=json";
+//Av 앨범3
+var url = 'https://spreadsheets.google.com/feeds/list/1S4_H5FKQch7QeUCG8PavrOl-0x_BySrQRPeUBQjmTuQ/1/public/values?alt=json';
+    url = "http://gomtangi.iptime.org/jav_query?callback=?";
+
+    $.getJSON(url, function(data){
+    var entry= data.feed.entry;
+
+    ar_video=[];
+    alert(entry.length);
+    for(var i in entry) {
+
+    var ar=[];
+    /*
+    ar['title'] = entry[i].gsx$title.$t;
+    ar['code'] = entry[i].gsx$code.$t;
+    ar['tag']= entry[i].gsx$tag.$t;
+    ar['qul']= entry[i].gsx$qul.$t;
+    ar['kind']= entry[i].gsx$kind.$t;
+    ar['comment'] = entry[i].gsx$comment.$t;
+    */
+    ar['release'] = entry[i].gsx$release.$t; 
+    ar['title'] = entry[i].gsx$title.$t;     
+    ar['img'] = entry[i].gsx$img.$t;
+    ar['file'] = entry[i].gsx$file.$t;
+    ar['name'] = entry[i].gsx$name.$t;
+    ar['avno'] = entry[i].gsx$avno.$t;
+    ar['avname'] = entry[i].gsx$avname.$t;
+    ar['hardlink'] = entry[i].gsx$hardlink.$t;    
+    ar['del'] = entry[i].gsx$del.$t;
+    
+    ar_video[i] = ar;
+      }
+
+   var width =  512/2;
+   var height = 288/2;
+
+   var url ="";   
+   var img = "";
+      
+   for(var i=0; i<  ar_video.length; i++)
+   {
+
+   if(ar_video[i].del == 1)
+   	continue;
+   	
+   var hardlink = ar_video[i].hardlink;
+   
+   if(hardlink == 1)
+   {
+   url = server_video + `jav/` + ar_video[i].file;
+   }
+   else
+   {
+   url = server_video + `jav${hardlink}/` + ar_video[i].file;
+   }
+   
+   img = server_video + 'torrent/pic/' + ar_video[i].img;
+   
+   $('#id_video').append(`
+     <div  style='float:left'>
+     <p class='vid_title hide'>${ar_video[i].title}</p>
+     <img id=${i} width=${width} height=${height} src="${img}"  onclick='OnImageClick(this)' >
+             <video id= 'video${i}'  width=${width} height=${height} controls preload='none' controlsList='nodownload' oncontextmenu='return false;'>
+                    <source src= "${url}" type='video/mp4'  >
+            </video>    
+     <p class='vid_singer hide'>${ar_video[i].avno} - ${ar_video[i].avname}</p>
+     </div>
+     `);
+   }       
+     });    
+}
+</script>
+</head>
+
+<body>
+    <p id='dashboard'> </p>
+    <button id='tog_title' class='togglebtn' onclick="togglefunc(this)">Title</button>
+    <button id='tog_singer' class='togglebtn' onclick='togglefunc(this)'>Name</button>
+     
+ <div id='id_video'>
+ </div>
+       
+
+</html>

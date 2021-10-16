@@ -1,0 +1,92 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <!--
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        -->
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+
+    var arAudio = ["그대는 눈물겹다-MC THE MAX.mp3", "서영은-그 사람의 결혼식.mp3", "슬픈사랑 - 박은신.mp3", 
+                          "이안 - 물고기자리.mp3", '[이예린] 포플러 나무 아래.mp3', '[베이시스] 내가 날 버린 이유.mp3', 
+                          `A Millionaire's First Love -  기억을 따라가는 재경.m4a`, '최재훈 - 잊을수없는너.mp3', 
+                          '[룰라]천상유애.mp3', '김현정-멍.mp3', '주홍 글씨_스페이스 A.mp3', 
+                          "난 괜찮아.mp3",'조관우 비원.m4a' , '인피니트(Infinite) - 내꺼하자.m4a'  ];
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", 'mp3/2/' + arAudio[i]);
+     audio.play();
+    
+    var result = arAudio[i].split(".");
+    $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+       aud_play_next() ;
+  });
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box (kor ver)</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>

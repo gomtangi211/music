@@ -1,0 +1,364 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+  
+  .video_region
+   {
+   position:relative;
+   z-index:1;
+   
+  }
+  .left_reg
+   {
+    position:absolute;
+    z-index:3;
+   left: 30px;   
+   top:50%;
+    transform: translate(-50%, -50%);  
+   fill:grey;
+  
+    }
+   .right_reg
+   {
+ 
+   position:absolute;
+   z-index:3;
+ 
+   top:50%; 
+   right:30px;
+    transform: translate(50%, -50%);  
+     fill:grey; 
+  
+  }
+  div:hover svg{
+  fill:white;
+ display:inline;
+  }
+  div:hover p{
+   color:white;
+   display:inline;
+  }
+  div svg{
+   display:none;
+ }
+/*
+  div .p{
+    display:none;
+  }
+*/
+  .video_title
+  {
+   position:absolute;
+   z-index:2;
+   left:50%;
+   top:5px;
+   transform: translate(-50%, 0%);  
+  color:white;
+     
+   }
+   .video_text
+   {
+   position:absolute;
+   z-index:2; 
+    width:100%;
+   display:inline;
+   color:white;
+  }
+video
+{
+    min-height:100px;
+ width:100%;
+ }
+  .comment_mar
+ {
+   position:absolute;
+   z-index:2;
+       width:100%;
+   display:inline;
+   color:white;
+  font-size: 150%;
+}
+ .comment_p
+{
+
+}
+        </style>
+        <script>
+   var arVideo ="";
+   
+   var arVideo2 =[
+   `[영화OST - 영화음악] 오즈의 마법사 - 주디 갈랜드 (Judy Garland) 'Over The Rainbow'_HD.mp4`,
+   `[영화음악-영화OST] 페임(Fame 1980) - 아이린 카라(Irene Cara) 'Fame' (한,영 가사자막)_HIGH.mp4`,
+   `[영화음악 - 영화 OST] 추억 - Barbra Streisand 'The way we were' (한,영 통합자막)_HD.mp4`,
+   `[영화 OST - 영화음악] 유 콜 잇 러브 (L'Etudiante, The Student) - Karoline Krüger 'You call .mp4`,
+   `[영화OST-영화음악] 라 밤바(La Bamba, 1987) - 로스 로보스(Los Lobos) 'La Bamba' (가사 자막)_HD.mp4`,
+   `[영화음악 - 영화OST] 영웅본색(英雄本色) - 장국영 '당년정(當年情)' (가사 자막 해석).mp4`,
+   `[영화OST-영화음악] 금지된 춤(The Forbidden Dance, 1990) - 카오마(Kaoma) 'Lambada'_HD.mp4`,
+   `[영화OST-영화음악] 탑 건(Top Gun) - 'Take My Breath Away' Berlin_HD.mp4`,
+   `[영화OST - 영화음악] 라붐 (La Boum, 1980) - 리처드 샌더슨(Richard Sanderson) 'Reality'_HD.mp4`,
+   `[영화 OST - 영화음악] 그대안의 블루 - 김현철 & 이소라 '그대안의 블루' (가사 자막).mp4`,
+   "[영화OST - 영화음악] 코요테 어글리(Coyote Ugly, 2000) - 리앤 라임즈 'Can`t Fight The Moonlight'.mp4",
+   `[영화OST - 영화음악] 록키(Rocky) - 빌 콘티(Bill Conti) 'Gonna Fly Now'_HD.mp4`,
+   `[영화OST - 영화음악] 인어 공주 (The Little Mermaid, 1989) - Samuel E. Wright 'Under The Se_HD.mp4`,
+   `[영화음악 - 영화OST] 오페라의 유령 - 에미 로섬 & 제라드 버틀러 'The Phantom Of The Opera' (한,영 가사 자막)_HIGH.mp4`,
+   "[영화 OST - 영화음악] 노킹 온 헤븐스 도어, Selig - Knockin' On Heaven's Door(한,영가사자막).mp4", 
+   `[영화OST - 영화음악] 러브 스토리 (Love Story, 1970)  - 리란시스 레이 'Snow Frolic'_HD.mp4`
+   ];
+   var arVideo3 =[
+   `알라딘 OST - A Whole New World (가사 해석)_Full-HD.mp4`,
+   `라이온 킹 2019 OST🦁 Circle of Life [영상-가사-해석-발음-자막-번역-lyrics]_Full-HD.mp4`,
+   `시스터 액트 OST - I Will Follow Him (가사 해석)_HD.mp4`,
+   `Mulan - Reflection (Lyrics) 1080pHD_Full-HD.mp4`,
+   `비욘세, 핑크, 브리트니 스피어스 - We Will Rock You (가사 해석)_HD.mp4`,
+   `王菲 - Eyes on Me- Faye Wong ((with lyrics & Sing along version))_HIGH.mp4`,
+   `Aretha Franklin - I Say a Little Prayer Lyrics HD_Full-HD.mp4`,
+   `바비 빈튼(Bobby Vinton) - Sealed With A Kiss(키스로 봉한 편지 1972) (lyrics 번역가사)_Full-HD.mp4`,
+   `귀여운 여인 OST - It Must Have Been Love (가사 해석)_Full-HD.mp4`,
+   `[영화OST - 영화음악] 타이타닉 (Titanic, 1997) - 셀리디온 'My Heart Will Go On'.mp4`,
+   "[영화OST - 영화음악] 연풍연가 - 주영훈 & 이혜진 '우리 사랑 이대로' (가사자막).mp4",
+   `[영화OST - 영화음악] 써니 (Sunny, 2011) - 보니 엠 (Boney M) 'Sunny'_HIGH.mp4`,
+   `[영화OST - 영화음악] 사랑과 영혼 (Ghost, 1990)  - 라이처스 브라더스 'Unchained Melody '.mp4`,
+   `[영화OST - 영화음악] 사관과 신사 - Joe Cocker & Jennifer Warnes 'Up Where We Belong' (한,영 가_HIGH.mp4`,
+   "Last Christmas - Wham!(왬) [가사해석-발음-한글-자막-번역-lyrics] @1_Full-HD.mp4", 
+   `All I Want for Christmas Is You - Mariah Carey(머라이어 캐리) [가사해석-발음-한글-자막-번역-lyrics_Full-HD.mp4`
+   ];
+   var arVideo4 =[
+   `[영화 OST - 영화음악] 시카고 - 케서린 제타 존스 _All That Jazz_ (한,영 가사 자막)_Full-HD.mp4`,
+   `[영화OST - 영화음악] 아마겟돈 - Aerosmith _I don_t want to miss a thing_(한,영 가사자막)_HD.mp4`,
+   `[영화OST - 영화음악] 여인의 향기(Scent Of A Woman, 1992) - Carlos Gardel _Por Una Cabeza_.mp4`,
+   `[영화OST-영화음악] 끝없는 사랑(Teachers, 1984) - 라이오넬 리치 _ 다이애나 로스 _Endless Love__HD.mp4`,
+   `Dancing Queen - Muriel_s Wedding movie ending_HD.mp4`,
+   `Love Actually - All I Want For Christmas Is You (Lyrics) 1080pHD_Full-HD.mp4`,
+   `Mamma Mia! Here We Go Again - Waterloo (Lyrics) 1080pHD_Full-HD.mp4`,
+   `My Best Friend_s Wedding - I Say a Little Prayer (Lyrics) 1080pHD_Full-HD.mp4`,
+   `글리(glee) OST - 맘마미아(Mamma Mia) (가사 해석)_HD.mp4`,
+   `러브 액츄얼리 OST - All I Want for Christmas is You (가사 해석)_HD.mp4`,
+   "보디가드 OST - I Will Always Love You (가사 해석)_Full-HD.mp4",
+   `보헤미안 랩소디 OST - We are the Champions (가사 해석)_Full-HD.mp4`,
+   `보헤미안 랩소디 OST - We Will Rock You (가사 해석)_Full-HD.mp4`,
+   `어크로스 더 유니버스 OST - Let it be (가사 해석)_Full-HD.mp4`
+   ];   
+    var arVideo5=[
+     `My Heart Will Go On 타이타닉 Titanic OST Celine Dion 가사 Lyrics 1_Full-HD.mp4`,
+    `Starship - Nothing's Gonna Stop Us Now (2021 HD Edition) (Lyrics Video) (Singalo_Full-HD.mp4`
+   ];
+        var i;
+        var i_min=0;
+        var i_max =arVideo.length-1;
+        var ost =0 ;
+        
+   function  video_play()
+   {
+       var video = document.getElementById("myVideo");
+
+       video.pause();
+        var sources = video.getElementsByTagName('source');
+        var src= sources[0].getAttribute('src');
+        sources[0].removeAttribute('src'); 
+        video.load();
+        if(ost)
+        { 
+        src= `vidbox/${ost}/` + arVideo[i];
+        }
+        else
+        {
+        src= `vidbox/2/` + arVideo[i];
+        }
+        sources[0].setAttribute('src',src );   
+        video.play();           
+   }
+   function left_click() {
+      video_play_prev();
+   }
+
+   function right_click() {
+      video_play_next() ;
+   }
+  
+  function video_play_prev() {
+     i=i-1;
+     if( i <= i_min)
+     {
+        i = i_max;
+    }
+    video_play();
+  }
+
+   function video_play_next() {
+       i= i+1;
+       if(i>i_max)  i=0;
+    
+       video_play();
+  }   
+  
+  function video_play_on(){
+       if(i>i_max)  
+          i=0;
+       if(i < i_min)  
+          i= i_min;
+       video_play();  
+  }
+  
+    var timer2 = setInterval(function(){
+ 
+       var video =  document.getElementById("myVideo");
+ 
+      video.onended = function(){
+       video_play_next() ;
+      }
+      video.onloadstart = function(){
+       
+ 
+        
+      }  
+    }, 1000)
+ 
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+  
+         //ost
+          
+         var rst = getQueryString("ost");
+         if(rst != "" && isNaN(rst) == false)
+         {
+            ost = parseInt(rst);
+            
+            switch(ost)
+            {
+            case 2:
+               arVideo = arVideo2;
+               i_max =arVideo.length-1;
+            break;            
+            case 3:
+               arVideo = arVideo3;
+               i_max =arVideo.length-1;
+            break;
+            case 4:
+               arVideo = arVideo4;
+               i_max =arVideo.length-1;
+            break;
+            case 5:
+               arVideo = arVideo5;
+               i_max =arVideo.length-1;
+            break;
+            default:
+               ost =2;
+               arVideo = arVideo2;
+               i_max =arVideo.length-1;            
+            }           
+         } 
+         else
+         {
+               arVideo = arVideo2;
+               i_max =arVideo.length-1;                     
+         }
+          
+         // no         
+       rst = getQueryString("no");
+        if(rst != "" && isNaN(rst) == false)
+        {
+          i = parseInt(rst);
+         } 
+         else
+         {
+         i =  randomInt(i_min, i_max);
+         }
+          video_play_on() ;
+      
+          
+  });
+ 
+function getQueryString(key) {
+ 
+    // 전체 Url을 가져온다.
+    var str = location.href;
+ 
+    // QueryString의 값을 가져오기 위해서, ? 이후 첫번째 index값을 가져온다.
+    var index = str.indexOf("?") + 1;
+ 
+    // Url에 #이 포함되어 있을 수 있으므로 경우의 수를 나눴다.
+    var lastIndex = str.indexOf("#") > -1 ? str.indexOf("#") + 1 : str.length;
+ 
+    // index 값이 0이라는 것은 QueryString이 없다는 것을 의미하기에 종료
+    if (index == 0) {
+        return "";
+    }
+ 
+    // str의 값은 a=1&b=first&c=true
+    str = str.substring(index, lastIndex); 
+ 
+    // key/value로 이뤄진 쌍을 배열로 나눠서 넣는다.
+    str = str.split("&");
+ 
+    // 결과값
+    var rst = "";
+ 
+    for (var i = 0; i < str.length; i++) {
+ 
+        // key/value로 나눈다.
+        // arr[0] = key
+        // arr[1] = value
+        var arr = str[i].split("=");
+ 
+        // arr의 length가 2가 아니면 종료
+        if (arr.length != 2) {
+            break;
+        }
+ 
+        // 매개변수 key과 일치하면 결과값에 셋팅
+        if (arr[0] == key) {
+            rst = arr[1];
+            break;
+        }
+    }
+    return rst;
+}
+ 
+
+ 
+        </script>
+</head>
+
+<body>
+ 
+      
+      <div class='video_region'>
+      
+      <div class='video_title'>
+       <p ><b>video box</b></p> 
+       </div>
+<video controls    id='myVideo'  controlsList='nodownload' oncontextmenu='return false;' >      
+   <source src="" type="video/mp4">      
+</video>
+             <div   class='left_reg' onclick='left_click()'>
+<svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" viewBox="0 0 48 48">
+    <path d="M36.82 33.18L27.64 24l9.18-9.18L34 12 22 24l12 12zM12 12h4v24h-4z"/>
+    <path fill="none" d="M48 48H0V0h48v48z"/>
+</svg>
+           </div>
+
+         <div   class='right_reg' onclick='right_click()'> 
+<svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" viewBox="0 0 48 48">
+    <path d="M11.18 14.82L20.36 24l-9.18 9.18L14 36l12-12-12-12zM32 12h4v24h-4z"/>
+    <path fill="none" d="M0 0h48v48H0V0z"/>
+</svg>
+              </div>
+
+      </div>
+             
+</body>
+
+</html>

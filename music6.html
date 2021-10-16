@@ -1,0 +1,93 @@
+<html>
+<head>
+       <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+ 
+    var arAudio = ["01 - Holiday.mp3", "03 Only Time 1.m4a", "05화 Boney M - Sunny.mp3", 
+                          "05화 Daniel Caine Orchestra - Mac Gyver.mp3", '011 Gabriels Oboe - 미션.mp3', '20 Joy - Touch By Touch.mp3', 
+                          `24 - On my own.mp3`, '57 - Anne murray - You needed me.mp3', 
+                          'Barbra Streisand-Memory.mp3', 'Beauty and the Beast (From Beauty and the BeastOfficial Video).mp3', 'Isabelle_adjani_-_Ohio.mp3',
+                          "Lambada - Kaoma.mp3",'Nothing Gonna Change My Love For You.mp3' , 'Sarah Brightman_08_Nella Fantasia_192k.mp3',
+		`take on me.wma`,   '유로댄스 - 죠이(Joy) - Korean Girls.mp3', '캐논.mp3'
+ 
+                         ];
+  
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+ 
+     $('#myAudio').attr("src", 'mp3/6/' + arAudio[i]);
+     audio.play();
+    
+    var result = arAudio[i].split(".");
+    $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+       aud_play_next() ;
+  });
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box (eng ver3)</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>

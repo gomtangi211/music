@@ -1,0 +1,99 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <!--
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        -->
+        <script src='js/jquery.min.js'></script>
+ 
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+ 
+    var arAudio = ["03 - Going the Distance.mp3", "04-GO WEST.mp3", "4 Non Blondes - What s Up.mp3", 
+                          "05 Bad Case Of Loving You.mp3", '06 - Sanctus.mp3', '06 Chariots of Fire.m4a', 
+                          `07 Smoke On The Water.mp3`, '10 - Summer Eletro Hits - Happening  - Smells like then spirit.mp3', 
+                          '11 Con Te Partirò.mp3', '11 September.mp3',
+                          "45 - Rhapsody of fire - Emerald Sword.mp3",'Alan Walker-01-Spectre.mp3' , 'Circle Of Life.mp3',
+`Don't Let Me Be Misunderstood (Santa Esmeralda).mp3`, 'Electric Romeo.ogg', 'Hawaii Five-0(Theme).mp3' ,
+'Sam Brown - Stop (Official Music Video).mp3', 'Sweet Dreams.mp3', 'The Whole Nine Yards‬‏.mp3'
+                         ];
+ 
+//var arAudio=[ '12 Ode to my family.wma' ];
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+ 
+     $('#myAudio').attr("src", 'mp3/3/' + arAudio[i]);
+     audio.play();
+    
+    var result = arAudio[i].split(".");
+    $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+       aud_play_next() ;
+  });
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box (eng ver)</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <!--
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        -->
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 100px; width: 350px;
+  border-radius: 15px;
+}
+ 
+        </style>
+
+        <script>
+
+    var arAudio = ["H_O_T-We Are The Future.mp3", "Love Tonight Ringtone.wav", "[3D Audio]  (OH MY GIRL) -(Secret Garden).mp3", 
+                          "The Way We Were.mp3", 'Pokarekare Ana-(戀歌).mp3', 'Tish Hinojosa - Donde Voy.mp3', 'Helene Fischer-The Power Of Love.mp3',
+                          '月亮代表我的心 - 鄧麗君.mp3', '夜来香 - 鄧麗君(邓丽君).mp3',
+                          "Follow Me.mp3",'Hatsune Miku.mp3' , 'Seijun Philosophy.mp3'  ];
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", 'mp3/1/' + arAudio[i]);
+     audio.play();
+    
+    var result = arAudio[i].split(".");
+    $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000)
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+       aud_play_next() ;
+  });
+        </script>
+</head>
+ <body>
+       <h2>환영합니다</h2>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box</b></p></center>
+        <audio  controls preload='none' id='myAudio' '> <source src="" type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div>
+
+
+       </div>
+</body>
+</html>
