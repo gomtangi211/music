@@ -1,0 +1,113 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:14px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+      video
+     {
+      min-height:100px;
+      width:100%;
+     }
+        .change   { /*추가*/
+          font-size: 14px; 
+          border: none;
+          /*outline: none;*/
+          color: white;           
+          /*padding: 14px 16px;*/
+          /* background-color: #4CAF50; */
+          background-color: dimgrey;
+          font: inherit; /* Important for vertical align on mobile phones */
+          /*margin: 0; *//* Important for vertical align on mobile phones */ 
+        } 
+        </style>
+
+        <script>
+
+var arTitle = [ '불곰사업', '러시아항모', '우주협력' ];
+var arVideo= [ `러시아가 갚을 돈 대신 준 물건이 한국을 초강대국으로 만들었다, 첨단기술을 습득한 불곰사업_Full-HD.mp4`,
+                 `러시아에서 버려진 배들 구입한 한국이 말도 안되는 기술을 공개하자 일본이 발칵 뒤집힌 이유_Full-HD.mp4`,
+`한국이 러시아와 우주협력을 한 진짜 이유 I 나로호 발사협력의 오해와 진실 I 더 넓게 뻗어갈 수 있는 한러 우주협력_Full-HD.mp4`
+                  ];
+var arDesc = [ `러시아가 갚을 돈 대신 준 물건이 한국을 초강대국으로 만들었다, 첨단기술을 습득한 불곰사업`,
+                `러시아에서 버려진 배들 구입한 한국이 말도 안되는 기술을 공개하자 일본이 발칵 뒤집힌 이유`,
+                `한국이 러시아와 우주협력을 한 진짜 이유 I 나로호 발사협력의 오해와 진실 I 더 넓게 뻗어갈 수 있는 한러 우주협력`
+                 ];
+function  make_title() {
+ 
+   for(var i=0; i <  arTitle.length  ; i++)
+   {
+       $('#id_title').append(`
+          <button id=${i} onclick='OnButtonClick(this)' class='change'>${arTitle[i]} </button>
+
+       `);
+   }
+ 
+}
+function video_check(id)
+{
+    for(var i=0; i<  arTitle.length; i++)
+    {
+       if(id==i)
+       {
+       $('#'+ i).addClass('change');
+       }
+       else
+       {
+        $('#' +i).removeClass('change');
+       }
+    }
+}
+
+function video_play(id)
+{
+       var video = document.getElementById("myVideo");
+
+       video.pause();
+        var sources = video.getElementsByTagName('source');
+        var src= sources[0].getAttribute('src');
+        sources[0].removeAttribute('src'); 
+        video.load();
+
+        src = `russi/` + arVideo[id];
+        sources[0].setAttribute('src',src );   
+        video.play();      
+        video_check(id);
+     
+         $('#id_desc').empty();
+         $('#id_desc').append(`
+        <p>${arDesc[id]}</p>
+      `);     
+}
+ 
+function OnButtonClick(e)
+{
+   var id = e.getAttribute('id');
+   video_play(id);
+}
+$(document).ready(function() {
+    make_title();
+    video_play(2);
+});
+
+        </script>
+</head>
+<body>
+ 
+<div id='id_title'> </div>
+ <p style='margin-top:10px'></p>
+<div id = 'id_desc'></div>
+<video controls    id='myVideo'  controlsList='nodownload' oncontextmenu='return false;' >      
+   <source src="" type="video/mp4">      
+</video>
+
+</body>
+</html>

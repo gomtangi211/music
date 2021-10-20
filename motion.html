@@ -1,0 +1,114 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:16px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+      video
+     {
+      min-height:100px;
+      width:100%;
+     }
+        .change   { /*추가*/
+          font-size: 16px; 
+          border: none;
+          /*outline: none;*/
+          color: white;           
+          /*padding: 14px 16px;*/
+          /* background-color: #4CAF50; */
+          background-color: dimgrey;
+          font: inherit; /* Important for vertical align on mobile phones */
+          /*margin: 0; *//* Important for vertical align on mobile phones */ 
+        } 
+        </style>
+
+        <script>
+
+var arTitle = [ '최악의 운동법', '식후습관', '아침습관', '점심습관' ];
+var arVideo= [ `50세 이후, 이런 운동 절대 하지 마세요! 인생 2막 망치는 최악의 운동법 [정라레]_Full-HD.mp4`,
+                 `식사 후에는 5가지를 하지 마세요! 없던 병도 생기게 하는 식후 습관  [정라레]_Full-HD.mp4`,
+`아침에는 5가지를 꼭 하세요! 50세 이후, 아침에 하면 보약만큼 좋은 습관 [정라레]_Full-HD.mp4`,
+`점심 드시고 꼭 해보세요. 소화가 잘되는 운동!!_Full-HD.mp4`
+                  ];
+var arDesc = [ `50세 이후, 이런 운동 절대 하지 마세요! 인생 2막 망치는 최악의 운동법`,
+                `식사 후에는 5가지를 하지 마세요! 없던 병도 생기게 하는 식후 습관`,
+                `아침에는 5가지를 꼭 하세요! 50세 이후, 아침에 하면 보약만큼 좋은 습관`,
+                `점심 드시고 꼭 해보세요. 소화가 잘되는 운동!!`               
+                 ];
+function  make_title() {
+ 
+   for(var i=0; i <  arTitle.length  ; i++)
+   {
+       $('#id_title').append(`
+          <button id=${i} onclick='OnButtonClick(this)' class='change'>${arTitle[i]} </button>
+
+       `);
+   }
+ 
+}
+function video_check(id)
+{
+    for(var i=0; i<  arTitle.length; i++)
+    {
+       if(id==i)
+       {
+       $('#'+ i).addClass('change');
+       }
+       else
+       {
+        $('#' +i).removeClass('change');
+       }
+    }
+}
+
+function video_play(id)
+{
+       var video = document.getElementById("myVideo");
+
+       video.pause();
+        var sources = video.getElementsByTagName('source');
+        var src= sources[0].getAttribute('src');
+        sources[0].removeAttribute('src'); 
+        video.load();
+
+        src = `health/` + arVideo[id];
+        sources[0].setAttribute('src',src );   
+        video.play();      
+        video_check(id);
+     
+         $('#id_desc').empty();
+         $('#id_desc').append(`
+        <p>${arDesc[id]}</p>
+      `);     
+}
+ 
+function OnButtonClick(e)
+{
+   var id = e.getAttribute('id');
+   video_play(id);
+}
+$(document).ready(function() {
+    make_title();
+    video_play(0);
+});
+
+        </script>
+</head>
+<body>
+ 
+<div id='id_title'> </div>
+ <p style='margin-top:10px'></p>
+<video controls    id='myVideo'  controlsList='nodownload' oncontextmenu='return false;' >      
+   <source src="" type="video/mp4">      
+</video>
+<div id = 'id_desc'></div>
+</body>
+</html>

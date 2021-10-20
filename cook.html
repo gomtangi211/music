@@ -1,0 +1,135 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:14px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+      video
+     {
+      min-height:100px;
+      width:100%;
+     }
+        .change   { /*추가*/
+          font-size: 14px; 
+          border: none;
+          /*outline: none;*/
+          color: white;           
+          /*padding: 14px 16px;*/
+          /* background-color: #4CAF50; */
+          background-color: dimgrey;
+          font: inherit; /* Important for vertical align on mobile phones */
+          /*margin: 0; *//* Important for vertical align on mobile phones */ 
+        } 
+        </style>
+
+        <script>
+
+var arTitle = [ '김치볶음밥', '꽁치김치찌개', '콩나물 볶음', '볶음밥', '콩나물국','배추된장국','소고기 미역국','잔치국수','비빔국수',
+                  '건꼴뚜기 조림', '육개장', '된장찌개', '두부조림', '콩나물조림'];
+var arVideo= [ `[김치볶음밥] 파기름보다 맛있는 '이것' 기름에 볶으세요! - 김치요리, 볶음밥 Kimchi Fried Rice_Full-HD.mp4`,
+                 `[꽁치김치찌개] '이것' 넣어 비린맛 없이 끝내주는 국물 만들기! - 김치찌개, 꽁치캔 요리_Full-HD.mp4`,
+`[콩나물 볶음] 이제 콩나물 무치지 말고 볶으세요! 딱! 10분이면 맛있는 반찬 완성 - 콩나물요리, 반찬 만들기  Stir-fried  bea_Full-HD.mp4`,
+`요긴하게 써먹는 볶음밥 비법 4가지 - 이렇게 볶으면 인생 볶음밥 됩니다. fried rice_Full-HD.mp4`,
+`초간단! 누구나 5분이면 [콩나물국 끓이기] - 이것만 넣으면 국물이 끝내주는 맛 완성!_Full-HD.mp4`,
+`[배추된장국] 조미료 없이도 시원하고 맛난 된장국 끓이기! 배추 겉잎 버리지 마세요. doenjangguk(Soybean Paste Soup)_Full-HD.mp4`,
+`[소고기 미역국] 눈물 나게 맛있는 미역국 끓이는 비법 3가지! - 미역 요리, 국 끓이기 Seaweed Soup_Full-HD.mp4`,
+`[잔치국수] 쉬워야 해먹지! 10분 만에 찐~한 육수 만들기_Full-HD.mp4`,
+`열무김치만 사 오세요! 평생 써먹는 비빔양념 내가 알려줄게요! - 비빔국수_Full-HD.mp4`,
+`이걸 맛본 옆집 아이 식사때마다 우리집에 놀러 옵니다! 마성의 단짠 반찬 [건꼴뚜기 조림]_Full-HD.mp4`,
+`[육개장] 추운 겨울엔 뜨끈한 국물이 진리! - 소고기 국밥, 국물요리, 파개장 yukgaejang(hot spicy meat stew)_Full-HD.mp4`,
+`육수와 조미료 없이도 된장찌개 맛있게 끓이는 방법! 참 쉽고 간편한 레시피bean paste stew_Full-HD.mp4`,
+`이제 우리 집에서는 더 이상 두부조림을 찾지 않아요! 이렇게 만드니 온 가족이 행복해합니다!_Full-HD.mp4`,
+`콩나물을 좋아하는 우리 아버지가 가장 좋아하는 요리입니다! 콩나물 무침말고 조림으로_Full-HD.mp4`
+                  ];
+var arDesc = [ `파기름보다 맛있는 '이것' 기름에 볶으세요! - 김치요리, 볶음밥 Kimchi Fried Rice`,
+                `'이것' 넣어 비린맛 없이 끝내주는 국물 만들기! - 김치찌개, 꽁치캔 요리`,
+                `이제 콩나물 무치지 말고 볶으세요! 딱! 10분이면 맛있는 반찬 완성 - 콩나물요리, 반찬 만들기  Stir-fried  bea`,
+                `요긴하게 써먹는 볶음밥 비법 4가지 - 이렇게 볶으면 인생 볶음밥 됩니다. fried rice`,
+                `초간단! 누구나 5분이면 [콩나물국 끓이기] - 이것만 넣으면 국물이 끝내주는 맛 완성!`,
+                `조미료 없이도 시원하고 맛난 된장국 끓이기! 배추 겉잎 버리지 마세요. doenjangguk(Soybean Paste Soup)`,
+                `눈물 나게 맛있는 미역국 끓이는 비법 3가지! - 미역 요리, 국 끓이기 Seaweed Soup`,
+                `쉬워야 해먹지! 10분 만에 찐~한 육수 만들기`,
+                `열무김치만 사 오세요! 평생 써먹는 비빔양념 내가 알려줄게요!`,
+                `마성의 단짠 반찬`,
+                `추운 겨울엔 뜨끈한 국물이 진리! - 소고기 국밥, 국물요리, 파개장 yukgaejang(hot spicy meat stew)`,
+                `육수와 조미료 없이도 된장찌개 맛있게 끓이는 방법! 참 쉽고 간편한 레시피bean paste stew`,
+                `이제 우리 집에서는 더 이상 두부조림을 찾지 않아요! 이렇게 만드니 온 가족이 행복해합니다!`,
+                `콩나물을 좋아하는 우리 아버지가 가장 좋아하는 요리입니다! 콩나물 무침말고 조림으로`
+                 ];
+function  make_title() {
+ 
+   for(var i=0; i <  arTitle.length  ; i++)
+   {
+       $('#id_title').append(`
+          <button id=${i} onclick='OnButtonClick(this)' class='change'>${arTitle[i]} </button>
+
+       `);
+   }
+ 
+}
+function video_check(id)
+{
+    for(var i=0; i<  arTitle.length; i++)
+    {
+       if(id==i)
+       {
+       $('#'+ i).addClass('change');
+       }
+       else
+       {
+        $('#' +i).removeClass('change');
+       }
+    }
+}
+
+function video_play(id)
+{
+       var video = document.getElementById("myVideo");
+
+       video.pause();
+        var sources = video.getElementsByTagName('source');
+        var src= sources[0].getAttribute('src');
+        sources[0].removeAttribute('src'); 
+        video.load();
+
+        src = `cookbox/` + arVideo[id];
+        sources[0].setAttribute('src',src );   
+        video.play();      
+        video_check(id);
+     
+         $('#id_desc').empty();
+         $('#id_desc').append(`
+        <p>${arDesc[id]}</p>
+      `);     
+}
+ 
+function OnButtonClick(e)
+{
+   var id = e.getAttribute('id');
+   video_play(id);
+}
+$(document).ready(function() {
+    make_title();
+    video_play(0);
+});
+
+        </script>
+</head>
+<body>
+ 
+<div id='id_title'> </div>
+ <p style='margin-top:10px'></p>
+<video controls    id='myVideo'  controlsList='nodownload' oncontextmenu='return false;' >      
+   <source src="" type="video/mp4">      
+</video>
+<div id = 'id_desc'></div>
+</body>
+</html>
