@@ -1,0 +1,117 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:14px; 
+           margin:0;
+           padding0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+      video
+     {
+      min-height:100px;
+      width:100%;
+     }
+        .change   { /*추가*/
+          font-size: 14px; 
+          border: none;
+          /*outline: none;*/
+          color: white;           
+          /*padding: 14px 16px;*/
+          /* background-color: #4CAF50; */
+          background-color: dimgrey;
+          font: inherit; /* Important for vertical align on mobile phones */
+          /*margin: 0; *//* Important for vertical align on mobile phones */ 
+        } 
+        </style>
+
+        <script>
+
+var arTitle = [ '영원의 제로', '도쿄 대공습', '퍼플선셋' ,'출구없는 바다', 'Little boy'];
+var arVideo= [ `살아서 집에 가고 싶던 어느 카미카제 대원 이야기_Full-HD.mp4`,
+                 `도쿄 대공습 아비규환 그 속의 사람들..._Full-HD.mp4`,
+`소련군의 만주작전과 관동군의 몰락  그리고 만주를 탈출하려는 이들의 이야기_Full-HD.mp4`,
+`일본해군의 참신했던 전술, 인간어뢰 가이텐_Full-HD.mp4`,
+`일본제국을 위한 화끈한 선물, 맨하탄 프로젝트_Full-HD.mp4`
+                  ];
+var arDesc = [ `abe도 본 일본 우익들이 극찬했던 영화`,
+                `일본인에 시각으로 본 도쿄 대공습`,
+                `중국인이 시각으로 본 전쟁이란?`,
+                `인간어뢰 가이텐`,
+                `맨하탄 프로젝트`
+                 ];
+function  make_title() {
+ 
+   for(var i=0; i <  arTitle.length  ; i++)
+   {
+       $('#id_title').append(`
+          <button id=${i} onclick='OnButtonClick(this)' class='change'>${arTitle[i]} </button>
+
+       `);
+   }
+ 
+}
+function video_check(id)
+{
+    for(var i=0; i<  arTitle.length; i++)
+    {
+       if(id==i)
+       {
+       $('#'+ i).addClass('change');
+       }
+       else
+       {
+        $('#' +i).removeClass('change');
+       }
+    }
+}
+
+function video_play(id)
+{
+       var video = document.getElementById("myVideo");
+
+       video.pause();
+        var sources = video.getElementsByTagName('source');
+        var src= sources[0].getAttribute('src');
+        sources[0].removeAttribute('src'); 
+        video.load();
+
+        src = `moviebox/` + arVideo[id];
+        sources[0].setAttribute('src',src );   
+        video.play();      
+        video_check(id);
+     
+         $('#id_desc').empty();
+         $('#id_desc').append(`
+        <p>${arDesc[id]}</p>
+      `);     
+}
+ 
+function OnButtonClick(e)
+{
+   var id = e.getAttribute('id');
+   video_play(id);
+}
+$(document).ready(function() {
+    make_title();
+    video_play(0);
+});
+
+        </script>
+</head>
+<body>
+ 
+<div id='id_title'> </div>
+ <p style='margin-top:10px'></p>
+<div id = 'id_desc'></div>
+<video controls    id='myVideo'  controlsList='nodownload' oncontextmenu='return false;' >      
+   <source src="" type="video/mp4">      
+</video>
+
+</body>
+</html>
