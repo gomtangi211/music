@@ -1,0 +1,350 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<style>
+        body{
+            font-family: "Malgun Gothic";font-size:14px; 
+           margin:0;
+           padding:0;
+           line-height:100%;
+        }
+
+.slideshow {
+    overflow: hidden;
+    position: relative;
+//   min-width: 1155px;
+//    height: 650px;
+    background:#fff;
+    min-width: 808px;
+    height:455px;
+}
+.slideshow_slides{
+    position:absolute;
+    width:100%;
+   height:100%;
+}
+.slideshow_slides a{
+   position:absolute;
+       width:100%;
+   height:100%;
+   text-align:center;  //image 중앙에 
+}
+.slideshow_nav a {
+   width:71px;
+   height:71px;
+   position:absolute;
+   left:50%;
+   top:50%;
+   transform:translateY(-50%);
+   background:url(/img/sprites.png) no-repeat;
+   text-indent:-9999em;
+ display:none; //일단 안보이게
+}
+
+.slideshow_nav  a.disabled {display:none;}
+
+.slideshow_nav  a.prev{
+   background-position: 0 -20px;
+   margin-left:-480px;
+}
+.slideshow_nav a.next{
+   background-position: -81px -20px;
+   margin-left:409px;
+  // margin-right:10px;
+}
+
+.indicator{
+   position:absolute;
+   bottom:20px;
+   left:0px ;
+   right:0px ;
+   display:flex;
+   justify-content:center;
+}
+.indicator a {
+   width:8px;
+   height:8px;
+   margin:0 5px;
+   background:url(/img/sprites.png) no-repeat -114px -4px;
+   text-indent:-9993em;
+}
+
+.indicator a.active {
+   background-position: -134px -4px;
+}
+</style>
+<script>
+
+var width_real = 1155 ;
+var height_real = 650 ;
+
+var width;
+var height;
+
+
+ 
+       var arDir=[1, 3, 3, 4, 4, 6, 6, 8, 8, 9];
+       var arAudio=["Helene Fischer-The Power Of Love.mp3",
+                       "11 Con Te Partirò.mp3",
+                       "STELLAR - Love Spell.mp3",
+                       "The Cranberries - Ode To My Family.mp3",
+                       "웸-라스트크리스마스.mp3",
+                       "20 Joy - Touch By Touch.mp3",
+                       "Sarah Brightman_08_Nella Fantasia_192k.mp3",
+                       "나나무스꾸리      사랑의 기쁨 Plaisir D'amour.mp3",
+                       "조장혁 - 중독된 사랑.mp3",
+                       "아이유 - 슬픈인연.mp3"
+];
+         var i_index;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i_index= i_index+1;
+     if(i_index >i_max)  i_index=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", `mp3/${arDir[i_index]}/` + arAudio[i_index]);
+     audio.play();
+    
+    
+        var index = arAudio[i_index].lastIndexOf(".");
+    var result= arAudio[i_index].substring(0, index); //.mp3 제거
+    var song = result.replace(/[0-9.]/g, "");  //숫자 제거
+    $('#myAudioname').text(song);
+ 
+     }
+ 
+
+$(document).ready( function() { 
+ 
+img_make(0.7);
+
+
+    var container = $('.slideshow'),
+         slideGroup = container.find('.slideshow_slides'),
+         slides = slideGroup.find('a'),
+         nav = container.find('.slideshow_nav'),
+         indicator=  container.find('.indicator'),
+         slideCount =  slides.length,
+         duration = 500,
+         easing= 'easeInOutExpo',
+         indicatorHtml = '' ,
+         currentIndex=0 
+          ; 
+ 
+ 
+        //슬라이드를 가로로 배열  
+        slides.each( function(i) {
+ 
+             var newLeft = i*100 + '%';
+             $(this).css({left: newLeft});
+
+             indicatorHtml += '<a href="">' +(i+1)  + '</a>';
+                    
+        });  
+        indicator.html(indicatorHtml); 
+      function  goToSlide(index) {
+          //i 0 left:0%,  i 1 left:-100%, i2 left: -200%
+          slideGroup.animate({left:-100*index+'%'}, duration, easing);
+          currentIndex = index;
+
+          updateNav(); //처음인지, 마지막 검사.
+       } 
+ 
+      updateNav(); 
+     slideGroup.find('a').click(function(e) {
+       e.preventDefault();
+    });
+      nav.find('a').click(function(e) {
+          e.preventDefault();
+         //jquery는 this로받는구나
+          if( $(this).hasClass('prev')) {
+               goToSlide(currentIndex-1);
+          }
+          else
+          {
+               goToSlide(currentIndex+1);
+         }
+     });  
+
+   indicator.find('a').click( function(e) {
+      e.preventDefault();
+      var idx = $(this).index();
+     goToSlide(idx);
+
+   });
+
+   function updateNav() {
+     var navPrev =  nav.find('.prev');
+     var navNext =  nav.find('.next');
+
+     if(currentIndex ==0) {
+        navPrev.addClass('disabled');
+     }
+     else
+     { 
+       navPrev.removeClass('disabled');
+     }
+     if(currentIndex== slideCount-1 ) {
+          navNext.addClass('disabled');
+      }else {
+          navNext.removeClass('disabled');   
+      }
+    
+    indicator.find('a').eq(currentIndex).addClass('active').siblings().removeClass('active');
+  }    
+ 
+     var timer1 = setInterval(function(){
+
+        if(currentIndex== slideCount-1 ) {
+              currentIndex =0;
+             goToSlide(currentIndex);
+        }
+         else {
+                  goToSlide(currentIndex+1);
+           }
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ; 
+          }
+    }, 3000); 
+
+    i_index =  randomInt(i_min, i_max);
+    aud_play_next() ; 
+ 
+
+
+});
+
+ 
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+ 
+function img_resize(magnify)
+{
+
+  width = Math.floor(width_real * magnify );
+  height = Math.floor(height_real* magnify );
+
+}
+function  img_make(magnify)
+{
+   var imgRaw = [ 'https://lh3.googleusercontent.com/pw/AM-JKLVc8iHefBkukLQCXq8SQvQtHoRWniKz81R7_V_jOwcn1r0SnbyN5wElIQXYdPoW1G10rImz3YodvhoSq_S4VjAEqnRKIbhEyy4OZ4bNvVFOBy6CmbKhWl7iy2SLw1RhZou0mFzuq_ixsQ3T1qlutkbx=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXW5IB6UvRjfSykoDGCxFOwSmg13IhIT9DeSLk_1PWueAVDsszxahy-yoFq33S_kxvcPAeluJo67cP0Ob924iVCe20qzjtTl3IYxNfGAMfxrkAYFPNjqdHElTV6jzCZh0QKaiC8LOWz7Pj12Vs9poBs=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXnnke5YlaAToGDYNmp8QTHCvNnXoY3GS4XdUZkRNZBRhk3wP3KRsAjrwH4wUtgBzOKQrhKJa78C6xINpHmjrtwrO0J-qU_IV4RNIPoUTAi-gIQ352rq7zdSoE99jpDiDLCTbtH4jz_qfd4i92idf35=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXcu2F5inD5xBMDm4LXhWimvHudRhwtK5nfy6TA7fWvtN8Amk1BrCM-XqDUzshm6Pfz70WT2fo-aGUQYVkKmPAD1pxM7Ze5QrNvzz5iU_XPG6aGBopur3FZ3kO2xWEGfHW2LzaajvfrbJPSlcFZr2db=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUzttyTtPivUrtEvSv8UiWqjf7A8rlZ13qwsYo1Z4zmvakM0lshHfLW8dhR83sP1Tw8tuEy2WSbmah9A3y6SIKGo5Gq-kzcgaDnEiqhVz6Qmsngt4hRTdvssSmyIyaFXStW30rysF6-G-Dv_zUaniN4=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXVHYAcEDUSoCTgvorXkH-QLQQ3ZtJ0aadvn_DDLAJbJYvnHMkjkyh-kd-3GhjqV0VEvwVXG2u_jrs4HTOFYq4s5HrBe0DtAdNt5Y3giM-YQa5LqfKHmVKMl0aK4tTbidSvk6XIYUaHztaRU9i9kmH8=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUTBdIybeXCY8DomU9HRBihzFQnkkwWfSXBS88je4MeTYNBmGCAvMm5D8DFLiDRGu2Nc1TTvUywLq23o5-3i0wa4RpZI1UiIr3XHvLKsjv4n9DbU96YDpJl1O0b0hiOeyYAS7z2zRATeW8OKOsDmq9C=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUMgB7uiKnmveD-0gQ5pXOWUtJ2ZhkJsY8qE_ZY2VHOrEjg9etOZRlxdYswA229GCE1HGowL_5hU0h0U66mCoE9CtTD0LAB1sKAcpX3BY7duVqi2UtA1HpSGPqf7PH6nAOnM949I-BUE10P8KCoo7b7=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXkcFqnAp34jiI81bY6nugel0lqaxpbtmIJP4mCMENAzHDKSaZ4PS4CpATwenD7MbBnHbhUrhxpT5LfyUjKo0vp1AyWH1Gb8toNMT8eGe-2XzjScFvPx8RwoDE1ngW1bbMyOt_r_EHS4qCjacmTCwqy=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUG9NLLnYr4liTydNKf4aRXSilJnZ-N5beqq17RbqHn16vqRWhExePpI5ptqHUK_4hAqWpAcE79OT8sSKbGEQ3x4QVArZzOgv-oQtIRAWWzE1kRErQX7h3boHVPEY41ry3jldKGgqKC7uwmo2U7d2XH=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVjUmr0fO_q4-cGj_d7AZUymCfKogTlqGVqWjzu1_1cfppuKRhnHFs9rneZgFrjcNZn-gxSyU-DRSkhCB8ovbOZEK7NXyU-QYxXxwAXtEVAhlZMRGPuUWg5U4cQPTqPkGVYGkCdGlslUD4KyJrWW0Fm=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLW--V8_22INJpGOMsss1fkaQoqX0O5vUKgO31FNT3M2W1rZa_ffYOPtjaFgnXFNLoIL9XxxEkK0dkqYIjEthV1Solq88s-rOMF85-Oe4Qm90Vetv397GGXpAfEy6jtyEk8XBUTJphbpRSetXZFy75SL=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWCAtn4Gf_24KC1qzRZnrXtlveRTwxgK5ygOSEH_VJzco7yCtNS85z4pQg9n__1RQt5SvKx4PRCFlt7RfNPwzXR7Gh30Ikokw1u_DRNa-5lyhk1LxMFGnPd7ik9_X6uD-3CI5joBNmaL7cYnjHGRMHG=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVW1rGGV7NN0e-CCKvZ6Fbi4YeHodC7rIBR0RihJDMpCo2XqacbLE_qpU-cdB04eM34sN_e8RH0OsdY0d0nSckQ5QPLNMbebE7bBuP6VBkKhvoBcIwgkNnu0UF2wpTTrCCxKIcfGLrYd-8zBkokYLDy=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUrsWHXbKfnP3alHmmE71PBP5zR0f4if1ePNt4aJBVAaWkRlDezi4oUaHB4yGW1zdRgo2EHxAvSNbenv7aDER1X-VpkRcddxrbhTQd9oMc4hCxIA-rj6AdOM15q_gqcDooEE8gENUDhLQlHlT1_ZEk7=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVJ0SCylbns2oOM4D-ysI3vAmfMoGprQixFyHghjJGC2hox3Hkd0WZ_-RaUm1vd0MNOetxPOYaLJAYkDci_gUxAaUjBLdAK5Gm6lcJQ94JyM6g3Yl5DUtvTOJXOP5He08qLvuQkTJLX_vIgg_3EiXYi=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWA-AoNXJRFgnWKi5xyWanuEA4zURAulhBLEoFAmisMfQTyA1QfloJWNVJwXAQmpZOfP2KXhhvV_Z-wQ2sFvja5pTCE_1jQwIz_DEFLkE2PpSmWdvxAydB-P4Uw8_w556SFbHLZ69HG9_tDZoG3EpIi=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUWkPZnYEXLHAieEyeDsVOooNWvmxUfS-XFCuGXybwNnJT6XqRAKeax75f8M5_aVWNzYQKV587uYIclK6IAyr13a23Q80JcYdebNpVlANFcQjO5O0Np_VsAl_tKy_LA6eECAgTgPg7muSNVQpVLou7J=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVs0NCmy25zxXWJM7WomNSQo_MaclxuxrzaFE6BNdt06-IH3dLJhGX1ry6FuAgdXunUHU6rKx40WJ1OXXHb-IX5s3Y8T44HO5ilO_HooxTmHftSkien7NW-BS4kXsVQ5WGyE1WJtsyKtN6fSrR1YsVs=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUW6mqK7lfygADp4AkQMtGBatai_ya8zm_nckeeA_PXOr8-muYV1rwVCjykonu3UpIZ27qVv7QRyuMyGV-gpueXqCgA-b4zn_K3z_Wrjz6Bzyux4MonAP8YAzyYMuJ_BhLoph4h2EyTdDx7IIlnlhAR=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXrSUtNQf1xcIG7vZTu8RfvM2u1kpE7f2dG5DDmXRXEEi3PlzPWJBuvtqcs6er13x-3GfApmS5FJ2nHZLqpB-oZLoPDqTXNujBLVq3mlePezqE7NZb8JHZX4b7eNxBqNAcD3BIjWO2xkR3kBjEJjllZ=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUXhP8GB5ILDDwEbpEoV83m8BaBWJPhQsRwpBGDJoAztItd2zc89Zc3kxKIXGqg9Qrv3KqRzqIsks1p_47QzbfZRirzWJIStoIyYFFc5kIKhxoI7vQLkXWU3d06jYXJ-DWTNk6s4K4s-7nKKZ3GNpz8=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWgrshHdsCF0x9X8qnV2_4tAaQ5pVztdDXskX6BlkyqV0psoXOeM0x53CcPieg_EXb1NQlzh0RGgg1xUcPA9muwSNUkmmFbaEjOXNoVYBGFWMV6aI5-mPCIC9HioWOVDNi7Eq3Z8jMHWvjwS51Fqlty=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXZWUBMreJMjxDaHuNXvQ8kAKFP0_vYMh-iBktLBG5Em273RvlYfVOvgSuQsCQ1cn8eQZ29sVyk7cS2O5kWTH8bSi38ITKh79R8F_Sx-OrOVlLKBtI_i3eROiAkRdzI1X4-VjG8sZFHyXoujOWkgg33=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVP_gOLZJ1g-MW5KVjidDhm4YwbzBsXBK9Yh7lgAgjFVd2zrDIcxIiKn1Of3uizudpQJKQ2XmdkiRvG-sEbunHbesB5bl0OT88jnynHrlEaqikcHFRckrtQxzO6VNMyC6Grdpuy3RwKnovjCPOZuGVI=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLU9viANrgp3689tXHXMaWbo6eHUi7stOqjNaWfnRWR5OGWTqy7f3-jbg5A1VIp-engr7Yt1NkTDTCLS1jQq9FhjGJS-xJQnVxcLx4xaixafigYNzrX1y4dDGhLUPt8gw1I_v1QkzeQ9TM2o7BPvPpkR=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWdrQvPMViR8336TxAurIA_MmSL0xUObswBvOABiwYjkw3yqMm7XSotuthaJmS5Kh94NS0CbrYo8ZQ73xKrIKFcrStOUcL_PvfGIEz77M2QFjCKX8sxM98dpO4XeaTCkQwGPTfm6VZxuJepKnPsZEQe=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXwsMB-r4LldYuRRs6MkeKTmRV9JdKzTSm__XEuExQTPEyi4yZQBZUU8ZyQmA3xew34DlJ6kP_VR6oP6DtizdkiO6rjZKL4YAUu4dBWVDTUTXw1myhEvAQxyb3denbWbRD3pHe5mOHBrqF2C3zqKuKb=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUApz3eCj0lRTqKMJghWDqA06wGhzT2hxwo7aOyb2tiQpUALUzLl2yXSz3SVptH2KSHAA8wL7M-aNvn5m-A11oOGdQPvFlzbLbGBbntlZ045FtRhOTKlVb9iwuG1XdY-0iruVeqzrxufxXHneVRl2Oc=w{width}-h{height}'
+];
+
+    var img_index=[];
+     for(  i=0; i< imgRaw.length; i++)
+     {
+          img_index[i] = i;
+     }
+     shuffle(img_index);
+
+     var img_list=[];
+     img_resize(magnify);
+
+     for( i =0; i< imgRaw.length; i++)
+    {
+           j = img_index[i];
+          img_list[i] =  imgRaw[j].replace('{width}', width);
+          img_list[i] =  img_list[i].replace( '{height}', height);
+           $('#img_dashboard').append(`
+               <a href=''><img   src= '${img_list[i]}' width=${width} height=${height} ></a>
+            `);
+     }
+}
+
+function shuffle(array) { array.sort(() => Math.random() - 0.5); }
+
+ </script>
+</head>
+<body>
+
+ 
+<div  class = 'slideshow'>
+     <div  id = 'img_dashboard' class='slideshow_slides'></div>
+
+     <div class='slideshow_nav'>
+           <a href='' class='prev'  >prev </a>
+           <a href='' class='next'  >next </a>
+      </div>
+      <div class='indicator'></div>
+
+</div>
+ 
+  <div style='margin:0 50'>
+    <audio  controls preload='none' id='myAudio'  src=""    type="audio/mp3"  autoplay> </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+      </div>    
+ 
+ </body>
+</html>
