@@ -132,9 +132,9 @@
      "올드팝송-올리비아뉴튼존 - Don't Cry For Me Argentina(1).mp3",  "올드팝송-홀리데이.mp3"
     ];
 
-        var i;
+        var i=0; //노래 0번부터
         var i_min=-1;
-        var i_max=arAudio.length-1;
+        var i_max;//=arAudio.length-1;
         var i_select=0;
         
     function music_load(sel)
@@ -143,12 +143,13 @@
          
          var rst = getQueryString("cate");
 
+
         //cate 없을때 , sel 범위가 넘어서면
        if(rst == "" && (sel < 1 || sel> 12) ) 
         {      
           sel = 8;    //기본 8번으로 하자
         }
-        else if(rst > 0 && rst<9)  //cate 있을때
+        else if(rst > 0 && rst<13)  //cate 있을때
         {
             sel = rst;
         }
@@ -170,20 +171,22 @@
               
              if( val >=0 && val < i_max)
                 i = val; 
-        }
-        
+         }
+        else
+             i=0; //지정 안해주니까 i에 NaN 값이 들어옴
+  
     }    
 
     function music_select( selected)
     {
         i_select=0;
-        var i = 1;
+        var j = 1;
        //버튼 번호 
-        for(i; i< arAudioAll.length ; i++)
+        for(j; j< arAudioAll.length ; j++)
         {
-            if(i == selected)
+            if(j == selected)
             {
-              i_select= i;
+              i_select= j;
               break;
             }
         }
@@ -228,7 +231,7 @@ function randomInt(low, high) {
 }
   $(document).ready(function(){
        i =  randomInt(i_min, i_max);
-       music_load(0);
+      music_load(0);
        aud_play_next() ;
   });
   
