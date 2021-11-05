@@ -1,0 +1,168 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <style>
+        body{
+            font-family: "Malgun Gothic";font-size:13px; 
+           margin:0;
+           padding:0;
+        }
+       div
+      {
+          padding-left:10px;
+      }
+     audio
+     {
+         width:250px;
+         height:30px
+     }
+ 
+.rounded {
+  background: silver;
+  height: 90px; width: 320px;
+  border-radius: 15px;
+}
+ 
+        </style>
+        <script>
+
+    var arAudio = ["[올드팝송] - 노랑리본.mp3",
+     "[올드팝송] - 모어 던 아이 캔 세이.mp3",
+     "[올드팝송]05 Jeanny.mp3",
+     "[올드팝송]Secret Garden - Dreamcatcher - 14 Adagio.mp3",
+     "[올드팝송]Steve Barakatt - 16 Quebec 1608.mp3", 
+     "[올드팝송]Still in Love With You (Live) - Thin Lizzy.mp3",
+     "[올드팝송]신디로퍼-쉬밥.mp3", 
+     "4a8fbd41_[올드팝송]솔밭사이로_강물은_흐르고.mp3",
+     "올드팝송 - The and of the world.mp3",
+     "올드팝송 - The Saddest Thing.mp3",
+     "올드팝송 - 나자리노 (폴모리아).mp3",
+     "올드팝송]monaco(모나코).mp3",
+     "올드팝송-댄스팝보니엠 - Gotta Go Home(Boney M).mp3",
+     "올드팝송-리차드막스-Now And Forever.mp3",
+     "올드팝송-백학 (러시아 민요).mp3",
+     "올드팝송-샹송 - 누구라도그러하듯이.mp3",
+     "올드팝송-올리비아뉴튼존 - Don't Cry For Me Argentina(1).mp3",
+     "올드팝송-홀리데이.mp3"];
+
+        var i;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i= i+1;
+     if(i>i_max)  i=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", 'mp3/12/' + arAudio[i]);
+     audio.play();
+    
+    
+        var index = arAudio[i].lastIndexOf(".");
+    var result= arAudio[i].substring(0, index); //.mp3 제거
+    var song = result.replace(/[0-9.]/g, "");  //숫자 제거
+    $('#myAudioname').text(song);
+    //var result = arAudio[i].split(".");
+   // $('#myAudioname').text(result[0]);
+     }
+  
+    var timer1 = setInterval(function(){
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ;
+      }
+
+    }, 1000);
+    
+ function getQueryString(key) {
+ 
+    // 전체 Url을 가져온다.
+    var str = location.href;
+ 
+    // QueryString의 값을 가져오기 위해서, ? 이후 첫번째 index값을 가져온다.
+    var index = str.indexOf("?") + 1;
+ 
+    // Url에 #이 포함되어 있을 수 있으므로 경우의 수를 나눴다.
+    var lastIndex = str.indexOf("#") > -1 ? str.indexOf("#") + 1 : str.length;
+ 
+    // index 값이 0이라는 것은 QueryString이 없다는 것을 의미하기에 종료
+    if (index == 0) {
+        return "";
+    }
+ 
+    // str의 값은 a=1&b=first&c=true
+    str = str.substring(index, lastIndex); 
+ 
+    // key/value로 이뤄진 쌍을 배열로 나눠서 넣는다.
+    str = str.split("&");
+ 
+    // 결과값
+    var rst = "";
+ 
+    for (var i = 0; i < str.length; i++) {
+ 
+        // key/value로 나눈다.
+        // arr[0] = key
+        // arr[1] = value
+        var arr = str[i].split("=");
+ 
+        // arr의 length가 2가 아니면 종료
+        if (arr.length != 2) {
+            break;
+        }
+ 
+        // 매개변수 key과 일치하면 결과값에 셋팅
+        if (arr[0] == key) {
+            rst = arr[1];
+            break;
+        }
+    }
+    return rst;
+}
+    
+     
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+  $(document).ready(function(){
+       i =  randomInt(i_min, i_max);
+             
+        //i 설정
+        var rst = getQueryString("song");
+        if(rst != "")
+        {
+             val = Number(rst);
+              
+             if( val >=0 && val < i_max)
+                i = val; 
+        }
+        
+       aud_play_next() ;
+  });
+  
+  
+  
+        </script>
+</head>
+
+<body>
+       <div class='rounded'>
+       <center><p style="padding-top:5px"><b>music box</b></p></center>
+        <audio  controls preload='none' id='myAudio' src=''> <source    type="audio/mp3" > </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+       </div>
+       <div></div>
+</body>
+
+</html>
