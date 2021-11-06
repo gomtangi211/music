@@ -142,20 +142,22 @@
         arAudioAll = [ null, arAudio1, arAudio2, arAudio3, arAudio4, arAudio5, arAudio6, arAudio7, arAudio8, arAudio9, arAudio10, arAudio11,arAudio12];
          
          var rst = getQueryString("cate");
-
-
-        //cate 없을때 , sel 범위가 넘어서면
-       if(rst == "" && (sel < 1 || sel> 12) ) 
-        {      
-          sel = 8;    //기본 8번으로 하자
-        }
+       
+        if( sel>0 && sel<13)   //조건 1:  sel 버튼 선택시
+        {
+        //alert(sel);
+       }
         else if(rst > 0 && rst<13)  //cate 있을때
         {
             sel = rst;
+        }        
+       else if(rst == "" && (sel < 1 || sel> 12) ) //cate 없을때 , sel 범위가 넘어서면
+        {      
+          sel = 8;    //기본 8번으로 하자
         }
        else 
      {
- // alert(sel);
+
      }
  
         music_select(sel);
@@ -231,7 +233,7 @@ function randomInt(low, high) {
 }
   $(document).ready(function(){
        i =  randomInt(i_min, i_max);
-      music_load(8);
+      music_load(0); //button 선택 없을때 상태:0
        aud_play_next() ;
   });
   
