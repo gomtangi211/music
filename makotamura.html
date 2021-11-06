@@ -1,0 +1,324 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <script src='js/jquery.min.js'></script>
+        <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+<style>
+        body{
+            font-family: "Malgun Gothic";font-size:14px; 
+           margin:0;
+           padding:0;
+           line-height:100%;
+        }
+
+.slideshow {
+    overflow: hidden;
+    position: relative;
+//   min-width: 998px;
+//    height: 562px;
+    background:#fff;
+    min-width: 699px;
+    height:393px;
+}
+.slideshow_slides{
+    position:absolute;
+    width:100%;
+   height:100%;
+}
+.slideshow_slides a{
+   position:absolute;
+       width:100%;
+   height:100%;
+   text-align:center;  //image 중앙에 
+}
+.slideshow_nav a {
+   width:71px;
+   height:71px;
+   position:absolute;
+   left:50%;
+   top:50%;
+   transform:translateY(-50%);
+   background:url(/img/sprites.png) no-repeat;
+   text-indent:-9999em;
+ display:none; //일단 안보이게
+}
+
+.slideshow_nav  a.disabled {display:none;}
+
+.slideshow_nav  a.prev{
+   background-position: 0 -20px;
+   margin-left:-480px;
+}
+.slideshow_nav a.next{
+   background-position: -81px -20px;
+   margin-left:409px;
+  // margin-right:10px;
+}
+
+.indicator{
+   position:absolute;
+   bottom:20px;
+   left:0px ;
+   right:0px ;
+   display:flex;
+   justify-content:center;
+}
+.indicator a {
+   width:8px;
+   height:8px;
+   margin:0 5px;
+   background:url(/img/sprites.png) no-repeat -114px -4px;
+   text-indent:-9993em;
+}
+
+.indicator a.active {
+   background-position: -134px -4px;
+}
+</style>
+<script>
+
+var width_real = 998 ;
+var height_real = 562 ;
+
+var width;
+var height;
+
+
+ 
+       var arDir=[10, 10, 10, 11, 11, 12, 12, 11, 4, 2];
+       var arAudio=["Baby One More Time.mp3",
+                       "Boston - Amanda {DRC}.mp3",
+                       "Making Love Out Of Nothing At All.mp3",
+                       "Phoebe Cates - Paradise .mp3",
+                       "Santa_Esmeralda_-_Youre_My_Everything.mp3",
+                       "올드팝송]monaco(모나코).mp3",
+                       "올드팝송-샹송 - 누구라도그러하듯이.mp3",
+                       "how am i supposed to live without you.mp3",
+                       "Lionel Richi - Say You , Say Me.mp3",
+                       "최재훈 - 잊을수없는너.mp3"
+];
+         var i_index;
+        var i_min=-1;
+        var i_max=arAudio.length-1;
+
+    function aud_play_next() {
+     i_index= i_index+1;
+     if(i_index >i_max)  i_index=0;
+ 
+    var audio =  document.getElementById("myAudio");
+     if(audio.paused == false)
+      {
+        audio.pause();
+     }
+     $('#myAudio').attr("src", `mp3/${arDir[i_index]}/` + arAudio[i_index]);
+     audio.play();
+    
+    
+        var index = arAudio[i_index].lastIndexOf(".");
+    var result= arAudio[i_index].substring(0, index); //.mp3 제거
+    var song = result.replace(/[0-9.]/g, "");  //숫자 제거
+    $('#myAudioname').text(song);
+ 
+     }
+ 
+
+$(document).ready( function() { 
+ 
+img_make(0.7);
+
+
+    var container = $('.slideshow'),
+         slideGroup = container.find('.slideshow_slides'),
+         slides = slideGroup.find('a'),
+         nav = container.find('.slideshow_nav'),
+         indicator=  container.find('.indicator'),
+         slideCount =  slides.length,
+         duration = 500,
+         easing= 'easeInOutExpo',
+         indicatorHtml = '' ,
+         currentIndex=0 
+          ; 
+ 
+ 
+        //슬라이드를 가로로 배열  
+        slides.each( function(i) {
+ 
+             var newLeft = i*100 + '%';
+             $(this).css({left: newLeft});
+
+             indicatorHtml += '<a href="">' +(i+1)  + '</a>';
+                    
+        });  
+        indicator.html(indicatorHtml); 
+      function  goToSlide(index) {
+          //i 0 left:0%,  i 1 left:-100%, i2 left: -200%
+          slideGroup.animate({left:-100*index+'%'}, duration, easing);
+          currentIndex = index;
+
+          updateNav(); //처음인지, 마지막 검사.
+       } 
+ 
+      updateNav(); 
+     slideGroup.find('a').click(function(e) {
+       e.preventDefault();
+    });
+      nav.find('a').click(function(e) {
+          e.preventDefault();
+         //jquery는 this로받는구나
+          if( $(this).hasClass('prev')) {
+               goToSlide(currentIndex-1);
+          }
+          else
+          {
+               goToSlide(currentIndex+1);
+         }
+     });  
+
+   indicator.find('a').click( function(e) {
+      e.preventDefault();
+      var idx = $(this).index();
+     goToSlide(idx);
+
+   });
+
+   function updateNav() {
+     var navPrev =  nav.find('.prev');
+     var navNext =  nav.find('.next');
+
+     if(currentIndex ==0) {
+        navPrev.addClass('disabled');
+     }
+     else
+     { 
+       navPrev.removeClass('disabled');
+     }
+     if(currentIndex== slideCount-1 ) {
+          navNext.addClass('disabled');
+      }else {
+          navNext.removeClass('disabled');   
+      }
+    
+    indicator.find('a').eq(currentIndex).addClass('active').siblings().removeClass('active');
+  }    
+ 
+     var timer1 = setInterval(function(){
+
+        if(currentIndex== slideCount-1 ) {
+              currentIndex =0;
+             goToSlide(currentIndex);
+        }
+         else {
+                  goToSlide(currentIndex+1);
+           }
+ 
+       var audio =  document.getElementById("myAudio");
+ 
+      audio.onended = function(){
+       aud_play_next() ; 
+          }
+    }, 3000); 
+
+    i_index =  randomInt(i_min, i_max);
+    aud_play_next() ; 
+ 
+
+
+});
+
+ 
+function random(low, high) {
+  return Math.random() * (high - low) + low
+}
+function randomInt(low, high) {
+  return Math.floor(Math.random() * (high - low) + low)
+}
+ 
+function img_resize(magnify)
+{
+
+  width = Math.floor(width_real * magnify );
+  height = Math.floor(height_real* magnify );
+
+}
+function  img_make(magnify)
+{
+   var imgRaw = [ 'https://lh3.googleusercontent.com/pw/AM-JKLWhJI4LCCx9gYTBCUshvmWO69vyUxJIOS0-Z1KX5BX8CJE88-XrbSmt-NavgYvY_QWxZxcLReh-lpfwD5mOABPuk9HSBu6yvXunEVpdx9EerbmD9eWxhqPQ3z-jo4L_J_k7wKLM30jrHwYH6B0nzN5X=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWmmuFFS_ri6UZ4InqrDk59lhOVV1BWHFrbxvixmlufhWeq9GTsilmah2zlslcgyw0QMe_ILV0C1N9HKs0u8pz3PDGB5Tf0tkTom1eeQXFwqet7zvQJXqIxwg0Wb7r-xZAk85cXppOvOcc1e1elOE_1=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXqmAiL5Y0M0lvjhz8z0AYXDP5ZCqKBTwOmH8RmOcwI-rk0gRIuvbrwhnY-gs2My8OwRUHcCE2dvvqumtN6ItvormAT6o9x7CKCkTFix_xo1ZZC_-neYl18YSfP0JgLxJU6W1DFR-x9qbHl6jYD6gmt=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXmNXRUhLwMou0nuDA-IZ96NLvr3IhLi0XCDUzZkTqrl4sD3ruDOXjOA7oePEnTCmGSzrsjns88mP8MU9_4UOCQ_1Jv0tzfyy714kROAzyaqn6xQnGBU2-kacTlSIp3oI7TLa8DZz0D0gs1-414KZTw=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLUy6iie9KeeMQlzyzJfpy1C-S_gydoM9xQ4QVmAGM2GbKnZosE5wkyyDMwg9OWTivYMp5CJbGWzJSyPulrVJs4yDlBEh-FsFwrbDq8B5N-4jYwaqPveOCTTCxn4Q7bqNghEV3AB6V_arpvfAEp9Y_WG=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXbAyKB_0hxhN9Kkblw-8g5l8NjgKObUzMQnBHg_fkQMMFBQLbXhj30v-PwuFc0hygnJDRUZbDm1ssTdXPLqZoOi6BtettTimEiC59ONV_mwEyK0qdRzXX4ixAmkE_jBlxSvK_ED32cYlGYOsIMma1K=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXBFcXvZCM6DpRx3ycftBdM7AlD0R5P1a9B3_-gOzKHtFZUY9xLY4DQ7spXi3O6fmvxDQ-v1aXhO1w5va84VstMGQyIJEPePdV6DkTtaFK9m-1ll74M8jLirHPvcl_dsyZ3NN1kPpN_XTu9-O1QhXcW=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLX3glUHbz9A0zXiW9AA5EVi31QOaEEH57FdPlSdD9VvH2WpvTepaKEweDQ8Qa3d_O6AtYgtMUlsEgXadI9S_baKuLwyfRFbK4tO_0WFoTMo5nJ_QxinGiJxi37FS-VdOhal_wfNbC6vE_QAkfpVYp-f=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLV6-1587Sc2kr9Q4Djf3yJHcxRXGYNsC2ahq_bPfoBZ8STrP50X7e-aNMbxxFMn8AmgWqieXArVn5P9Q6EGOKjcHn3juKNDIPvtnqWrTV3ZWBSIABsL0YZU6RBym65mq3eSrm9H1RcpV2SJG6g6MINJ=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLVTOXubL9IXCh6ZMBjk25ymoYspI5UO4eilUPXq-MsmUxzeB-871xoQGqsj6IDkxgmy-KMbZD089SosWSFyC_snk12hkjlDZGdPp5x4niQ0WrI_4pEuVEeKl1kCy5wsMoBl11UrMhNHY-2Vicm9lsfk=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLWmwQ2Kz2mWaPvLeiua9PLCZOOH-S56Xx2rHk2pNum63LeD0ZKfA-7Q1vRKLEU4VkUZAz9_1GztycHGP7l-w7Jf183WbZuQB5hUUJ92M2XAwulzCKkB5jKS_aG6G_CjczRyUBl3QhfXKqqzsUZvpXQC=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLX0y-wLPiPKQARS1msZjPlgXAkNZxn8VaAkWGHul2dAyCIVo20S_zBNYRpkacu1d6D5TEIZJxT_xM8Yszowo4jbHIWmcKsBHcnP--WM7p1GnDhIsPHQf20gEh7UGK6bIxBxu_lRXcecZ3aJ0AM3pnHj=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLU8h6nAox2NIs14w0OBu6pvZhy2mFyOmBHyS3MMp26EWZvLABH2cOmH_2y20BcEfu-A5XwS_gR8oZvQFJEUhy5rur65zNYSrjAi-EdjoZNqmLeic3zYLnP0ggLWu_ICQgspDTmct_zaKDS-HSgH9XJ8=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLXgzXSpTQ_MatO7QiC9jBgHTLL_jmwfM7Xd857tMNwK9prJrCkTIJ2Qm-mZ9pXGVSbwnaGUkLTaAs6z5yKZa8UksqcLPXub_ROMu_eGZR4rySCdoI9ok4715HNWUfCEPa4KNPKxNt9E1uGfT2dqiegK=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLU2_D641C6Cvs2eMmL7Iq4V6OU_9BQiaF_qT1HPlLC8ampWm8GQXx00QnFcpbmAZbyprt06KN3AxtrMyolSavZaj1KlaowVu10-JwW-MVuqDtINLFjSqquDggnG0rXRzHkFsjEl1QH58Mm1fFm-3bU_=w{width}-h{height}'
+,
+'https://lh3.googleusercontent.com/pw/AM-JKLW5c4--LX2JAIJpYPn7A-dN4mOeIOxjsV2_SpxhxXK7e9mcM3NsxW2-bodzLn9crle5XojJTgGQAJmBu_2ASYEY4PcCbsDg1UM5uKHCJXUiA6aViVubBrv7WmZLoaVZem-gcfVCzqcUsAKXe48l8TSS=w{width}-h{height}'
+];
+
+    var img_index=[];
+     for(  i=0; i< imgRaw.length; i++)
+     {
+          img_index[i] = i;
+     }
+     shuffle(img_index);
+
+     var img_list=[];
+     img_resize(magnify);
+
+     for( i =0; i< imgRaw.length; i++)
+    {
+           j = img_index[i];
+          img_list[i] =  imgRaw[j].replace('{width}', width);
+          img_list[i] =  img_list[i].replace( '{height}', height);
+           $('#img_dashboard').append(`
+               <a href=''><img   src= '${img_list[i]}' width=${width} height=${height} ></a>
+            `);
+     }
+}
+
+function shuffle(array) { array.sort(() => Math.random() - 0.5); }
+
+ </script>
+</head>
+<body>
+
+ 
+<div  class = 'slideshow'>
+     <div  id = 'img_dashboard' class='slideshow_slides'></div>
+
+     <div class='slideshow_nav'>
+           <a href='' class='prev'  >prev </a>
+           <a href='' class='next'  >next </a>
+      </div>
+      <div class='indicator'></div>
+
+</div>
+ 
+  <div style='margin:0 50'>
+    <audio  controls preload='none' id='myAudio'  src=""    type="audio/mp3"  autoplay> </audio>
+       <button type='button'   onclick="aud_play_next()">Next</button>
+        <p id='myAudioname' style="margin-top:-5px" ></p>
+      </div>    
+ 
+ </body>
+</html>
